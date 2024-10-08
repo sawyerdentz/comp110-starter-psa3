@@ -4,8 +4,8 @@ Module: hurricane_tracker
 Program to visualize the path of a Hurrican in the North Atlantic Basin.
 
 Authors:
-1) Name - USD Email Address
-2) Name - USD Email Address
+1) Sawyer Dentz - sdentz@sandiego.edu
+2) Matthew Oderlin - moderlin@sandiego.edu
 """
 import turtle
 
@@ -67,12 +67,60 @@ def animate(csv_filename):
 
 
     # Your code to perform the animation will go after this line.
+    f = open(csv_filename, "r")
 
+    first_line = f.readline().split(",")
+    hurricane_turtle.penup()
+    hurricane_turtle.hideturtle()
+    hurricane_turtle.goto(float(first_line[3]), float(first_line[2]))
+    hurricane_turtle.pendown()
+    hurricane_turtle.showturtle()
+    hurricane_turtle.color("red")
+    for line in f:
+        val = line.split(",")
+        xval = float(val[3])
+        yval = float(val[2])
+
+        if get_category(int(val[4])) == 1:
+            hurricane_turtle.pencolor("blue")
+            hurricane_turtle.pensize(2)
+        elif get_category(int(val[4])) == 2:
+            hurricane_turtle.pencolor("green")
+            hurricane_turtle.pensize(3)
+        elif get_category(int(val[4])) == 3:
+            hurricane_turtle.pencolor("yellow")
+            hurricane_turtle.pensize(4)
+        elif get_category(int(val[4])) == 4:
+            hurricane_turtle.pencolor("orange")
+            hurricane_turtle.pensize(5)
+        elif get_category(int(val[4])) == 5:
+            hurricane_turtle.pencolor("red")
+            hurricane_turtle.pensize(6)
+        else:
+            hurricane_turtle.pencolor("white")
+            hurricane_turtle.pensize(1)
+
+        hurricane_turtle.goto(xval, yval)
+        hurricane_turtle.write(get_category(int(val[4])))
 
     # DO NOT MODIFY THE FOLLOWING LINE! (It make sure the turtle window stays
     # open).
     turtle.done()
 
+def get_category(wind_speed):
+    if wind_speed >= 74 and wind_speed <= 95:
+        return 1
+    elif wind_speed >= 96 and wind_speed <= 110:
+        return 2
+    elif wind_speed >= 111 and wind_speed <= 129:
+        return 3
+    elif wind_speed >= 130 and wind_speed <= 156:
+        return 4
+    elif wind_speed > 156:
+        return 5
+    else:
+        return 0
+    
 
 # Do not modify anything after this point.
 if __name__ == "__main__":
