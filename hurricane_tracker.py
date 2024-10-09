@@ -75,7 +75,26 @@ def animate(csv_filename):
     hurricane_turtle.goto(float(first_line[3]), float(first_line[2]))
     hurricane_turtle.pendown()
     hurricane_turtle.showturtle()
-    hurricane_turtle.color("red")
+    
+    if get_category(int(first_line[4])) == 1:
+        hurricane_turtle.pencolor("blue")
+        hurricane_turtle.pensize(2)
+    elif get_category(int(first_line[4])) == 2:
+        hurricane_turtle.pencolor("green")
+        hurricane_turtle.pensize(3)
+    elif get_category(int(first_line[4])) == 3:
+        hurricane_turtle.pencolor("yellow")
+        hurricane_turtle.pensize(4)
+    elif get_category(int(first_line[4])) == 4:
+        hurricane_turtle.pencolor("orange")
+        hurricane_turtle.pensize(5)
+    elif get_category(int(first_line[4])) == 5:
+        hurricane_turtle.pencolor("red")
+        hurricane_turtle.pensize(6)
+    else:
+        hurricane_turtle.pencolor("white")
+        hurricane_turtle.pensize(1)
+
     for line in f:
         val = line.split(",")
         xval = float(val[3])
@@ -102,12 +121,23 @@ def animate(csv_filename):
 
         hurricane_turtle.goto(xval, yval)
         hurricane_turtle.write(get_category(int(val[4])))
+    f.close()
+
 
     # DO NOT MODIFY THE FOLLOWING LINE! (It make sure the turtle window stays
     # open).
     turtle.done()
 
 def get_category(wind_speed):
+
+    """
+    takes in a wind_speed parameter and returns the category that the hurricane is
+
+    wind_speed: an integer of the hurricanes wind speed
+
+    returns: an integer of the category that the hurricane is
+    """
+
     if wind_speed >= 74 and wind_speed <= 95:
         return 1
     elif wind_speed >= 96 and wind_speed <= 110:

@@ -4,46 +4,68 @@ Module: movie_sentiment
 Program to analyze movie reviews and predict the sentiment of new reviews.
 
 Authors:
-1) Name - USD Email Address
-2) Name - USD Email Address
+1) Sawyer Dentz - sdentz@sandiego.edu
+2) Matthew Oderlin - moderlin@sandiego.edu
 """
 
 def average_review(word, review_filename):
     """
-    FIXME: Add function synopsis here.
+    finds the average score of a review containing the word
 
     Parameters:
     word (type: string): The word to look for in the reviews.
-    FIXME: add info about second parameter
+    review_filename (type: string): The review file that the word is looked for in
 
     Returns:
-    (type: float) FIXME by describing what is returned here.
+    (type: float) the average score of the reviews containing the word
     """
 
     review_file = open(review_filename, 'r')
 
+    sum = 0
+    lines = 0
+
     for line in review_file:
         # make lower case to avoid case sensitivity
         lower_line = line.lower()  
+        lower_word = word.lower()
 
-        # FIXME: finish implementing this loop body
+        vals = lower_line.split()
+        review = int(vals[0])
+        vals = vals[1:]
+    
+        if lower_word in vals:
+            sum += review
+            lines += 1
+        if lines == 0:
+            return 2
 
 
     # done reading file, so close it
     review_file.close()
 
-    # FIXME: calculate the average review score
+    average_score = sum / lines
 
-    return None     # replace this with returning the calculated average
+    return average_score
 
 
 def estimate_review_score(movie_review, review_filename):
     """
-    FIXME: Fill in this docstring comment, using the exact format given for the
-    average_review docstring comment.
-    """
+    estimates the score of a review based on average scores of the words in the review
 
-    return None     # replace this with returning the estimated review
+    Parameters:
+    movie_review (type: string): the review that will be scored
+    review_filename (type: string): the file that will be used to calculate average scores of words
+
+    Returns:
+    (type: float): the estimated score of the review
+    """
+    total = 0
+    words = movie_review.split()
+    for word in words:
+        total += average_review(word, review_filename)
+
+    return (total / len(words))
 
 
 
@@ -55,7 +77,30 @@ def estimate_user_review():
     with a description of that rating (e.g. "neutral" or "slightly positive").
     """
 
-    pass # replace this line of code with your function implementation
+    review = input("Enter a movie review: ")
+
+    new_review = ""
+    for ch in review:
+        if ch not in [".", ",", "!", "-"]:
+            new_review += ch
+    review = new_review
+    print(review)
+
+    file = input("Enter the name of the file containing reviews: ")
+    score = estimate_review_score(review, file)
+
+    if round(score) == 0:
+        sentiment = "negative"
+    elif round(score) == 1:
+        sentiment = "somewhat negative"
+    elif round(score) == 2:
+        sentiment = "neutral"
+    elif round(score) == 3:
+        sentiment = "somewhat positive"
+    elif round(score == 4):
+        sentiment = "positive"
+
+    print("Estimated score:", str(score) + " (" + sentiment + ")")
 
 
 # Do not modify anything after this point.
