@@ -28,17 +28,16 @@ def average_review(word, review_filename):
     for line in review_file:
         # make lower case to avoid case sensitivity
         lower_line = line.lower()  
-        lower_word = word.lower()
 
-        vals = lower_line.split()
+        vals = lower_line.split(" ")
         review = int(vals[0])
         vals = vals[1:]
     
-        if lower_word in vals:
+        if word.lower() in vals:
             sum += review
             lines += 1
-        if lines == 0:
-            return 2
+    if lines == 0:
+        return 2.0
 
 
     # done reading file, so close it
@@ -60,6 +59,13 @@ def estimate_review_score(movie_review, review_filename):
     Returns:
     (type: float): the estimated score of the review
     """
+
+    new_review = ""
+    for ch in movie_review:
+        if ch not in [".", ",", "!", "-"]:
+            new_review += ch
+    movie_review = new_review
+
     total = 0
     words = movie_review.split()
     for word in words:
@@ -78,13 +84,6 @@ def estimate_user_review():
     """
 
     review = input("Enter a movie review: ")
-
-    new_review = ""
-    for ch in review:
-        if ch not in [".", ",", "!", "-"]:
-            new_review += ch
-    review = new_review
-    print(review)
 
     file = input("Enter the name of the file containing reviews: ")
     score = estimate_review_score(review, file)
